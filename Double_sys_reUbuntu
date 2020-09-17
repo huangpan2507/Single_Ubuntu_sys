@@ -1,0 +1,65 @@
+师门电脑（单系统）重装Ubuntu指南！ 
+ 链接： https://blog.csdn.net/chentianting/article/details/85089403
+ 
+ 
+1.在官网下载Nvidia驱动
+
+根据自己的型号下载：放在/Downloads下
+GeForce RTX 2080
+Linux 64-bit
+English(US)
+
+
+2. 屏蔽开源驱动 nouveau
+    
+    sudo gedit /etc/modprobe.d/blacklist.conf
+
+添加以下内容保存:
+
+    blacklist nouveau 
+    options nouveau modeset=0
+
+
+
+
+
+3.删除旧NVIDIA驱动
+
+    sudo apt-get --purge remove nvidia-*
+    sudo apt-get --purge remove xserver-xorg-video-nouveau
+
+保存在终端更新内核：
+
+    sudo update-initramfs -u
+
+4.重启电脑
+5.按Ctrl + Alt +F1(F1~F6均可)到x-server, Ctrl+Alt+F7是返回
+
+输入用户名密码登录（数字不能用小键盘输入）
+
+    sudo service lightdm stop
+
+如果提示unit lightdm.service not loaded
+
+则先安装LightDm： sudo apt install lightdm
+
+安装完毕后跳出一个界面，选择lightdm，再sudo service lightdm stop
+
+6.执行安装驱动
+
+    cd Downloads
+    sudo chmod a+x NVIDIA....(自行下载的驱动名)  
+    sudo ./NVIDIA.....(自行下载的驱动名)
+
+  
+
+键入用户密码。后面就一路Accept就可以~报错**The distribution-provided pre-install script failed!**不必理会，继续安装。最重要的一步，安装程序问你是否使用nv的xconfig文件，这里一点要选yes，否则在启动x-window时不会使用nv驱动
+
+至此，安装成功~
+7.重启X-window 服务
+
+    sudo service lightdm start
+
+8.重启电脑，查看设置中 的Details中的 About
+
+如果graphics 是 GeForce ，则安装成功
